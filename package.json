@@ -1,0 +1,23 @@
+{
+  "name": "sufllaqe-gersi-web",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public website for Sufllaqe Gersi — family fast food in Tirana (SQ/EN).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "og": "node scripts/gen-og.mjs",
+    "hero": "node scripts/gen-hero.mjs"
+  },
+  "dependencies": {
+    "astro": "^4.16.18"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "sharp": "^0.33.5",
+    "typescript": "^5.6.3"
+  }
+}

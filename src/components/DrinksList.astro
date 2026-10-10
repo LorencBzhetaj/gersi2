@@ -1,0 +1,96 @@
+---
+import { drinks, alcoholNotice } from '../data/menu'
+import { useDict } from '../i18n/ui'
+import type { Lang } from '../lib/site'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const t = useDict(lang)
+---
+
+<section class="section drinks" aria-labelledby="drinks-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 id="drinks-title" class="section-head__title">{t.drinksTitle}</h2>
+    </div>
+
+    <ul class="drinks__list reveal">
+      {
+        drinks.map((d) => (
+          <li class="drinks__row">
+            <span class="drinks__name">{d.name}</span>
+            <span class="drinks__dots" aria-hidden="true" />
+            <span class="drinks__price">
+              {d.price} <span class="drinks__cur">{d.currency}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="drinks__note">{alcoholNotice[lang]}</p>
+  </div>
+</section>
+
+<style>
+  .drinks {
+    padding-top: 0;
+  }
+  .drinks__list {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 920px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px var(--sp-7);
+  }
+  .drinks__row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-2);
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .drinks__name {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .drinks__dots {
+    flex: 1;
+    border-bottom: 1px dotted var(--border);
+    transform: translateY(-4px);
+  }
+  .drinks__price {
+    flex: 0 0 auto;
+    font-weight: 700;
+    color: var(--brown);
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .drinks__cur {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+  .drinks__note {
+    text-align: center;
+    margin: var(--sp-5) 0 0;
+    color: var(--ink-soft);
+    font-size: 14px;
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 860px) {
+    .drinks__list {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px var(--sp-6);
+    }
+  }
+  @media (max-width: 520px) {
+    .drinks__list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

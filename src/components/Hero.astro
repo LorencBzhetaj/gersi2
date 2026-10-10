@@ -1,0 +1,471 @@
+---
+import Icon from './Icon.astro'
+import { type Lang } from '../lib/site'
+import { useDict } from '../i18n/ui'
+import { heroProducts, heroImg } from '../data/hero'
+import { business } from '../data/business'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const t = useDict(lang)
+const n = heroProducts.length
+---
+
+<section class="hero">
+  <div class="container hero__inner">
+    <h1 class="hero__title">{t.heroH1}</h1>
+
+    <div class="hero__carousel" data-carousel>
+      <button
+        class="hero__arrow hero__arrow--prev"
+        type="button"
+        data-prev
+        aria-label={t.prevProduct}
+      >
+        <Icon name="arrow" size={22} />
+      </button>
+
+      <div class="hero__stage">
+        <ul class="hero__slides" data-slides>
+          {
+            heroProducts.map((p, i) => (
+              <li
+                class={`hero__slide${i === 0 ? ' pos-center' : ' is-hidden'}`}
+                data-slide={i}
+                data-name={p.name[lang]}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${p.name[lang]} (${i + 1}/${n})`}
+              >
+                <img
+                  class="hero__product"
+                  style={`--scale:${p.scale}`}
+                  src={heroImg(p.id, 600)}
+                  srcset={`${heroImg(p.id, 600)} 600w, ${heroImg(p.id, 900)} 900w`}
+                  sizes="(max-width:560px) 84vw, 460px"
+                  alt={p.alt[lang]}
+                  draggable="false"
+                  decoding="async"
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={i === 0 ? 'high' : undefined}
+                />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <button
+        class="hero__arrow hero__arrow--next"
+        type="button"
+        data-next
+        aria-label={t.nextProduct}
+      >
+        <Icon name="arrow" size={22} />
+      </button>
+    </div>
+
+    <p class="hero__pname" data-pname>{heroProducts[0].name[lang]}</p>
+
+    <div class="hero__dots" data-dots role="group" aria-label={t.chooseProduct}>
+      {
+        heroProducts.map((p, i) => (
+          <button
+            class={`hero__dot${i === 0 ? ' is-active' : ''}`}
+            type="button"
+            data-dot={i}
+            aria-label={`${t.viewProduct} ${p.name[lang]}`}
+            aria-current={i === 0 ? 'true' : undefined}
+          />
+        ))
+      }
+    </div>
+
+    <p class="hero__caption">{t.heroCaption}</p>
+
+    <div class="hero__actions">
+      <a class="btn btn--primary hero__cta" href="#menuja">
+        {t.viewMenu}
+        <Icon name="arrow" size={20} />
+      </a>
+      {
+        business.telephone && (
+          <a class="btn btn--outline hero__cta" href={`tel:${business.telephone}`}>
+            <Icon name="phone" size={18} />
+            {t.callToOrder}
+          </a>
+        )
+      }
+    </div>
+
+    <p class="sr-only" data-live aria-live="polite" aria-atomic="true"></p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--sp-6) var(--sp-8);
+  }
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .hero__title {
+    font-size: clamp(30px, 6.4vw, 52px);
+    font-weight: 700;
+    max-width: 16ch;
+    margin-bottom: var(--sp-5);
+  }
+
+  /* Carousel */
+  .hero__carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-4);
+    width: 100%;
+  }
+  .hero__stage {
+    position: relative;
+    width: min(460px, 84vw);
+    height: clamp(300px, 72vw, 400px);
+    overflow: hidden;
+    flex: 0 0 auto;
+    touch-action: pan-y;
+  }
+  .hero__slides {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    inset: 0;
+  }
+  .hero__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 480ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      opacity 420ms ease-out;
+  }
+  .hero__slide.pos-center {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0) rotate(0deg);
+  }
+  .hero__slide.pos-left {
+    opacity: 0;
+    visibility: visible;
+    transform: translateX(-16%) rotate(-2deg);
+  }
+  .hero__slide.pos-right {
+    opacity: 0;
+    visibility: visible;
+    transform: translateX(16%) rotate(2deg);
+  }
+  .hero__slide.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: none;
+    transition: none;
+  }
+  .hero__product {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transform: scale(var(--scale, 1));
+    -webkit-user-drag: none;
+    user-select: none;
+    filter: drop-shadow(0 16px 20px rgba(53, 27, 14, 0.14));
+  }
+
+  /* Arrows (desktop) */
+  .hero__arrow {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--brown);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, opacity 0.2s ease;
+  }
+  .hero__arrow:hover {
+    border-color: var(--brown);
+    background: var(--cream-2);
+  }
+  .hero__arrow--prev :global(svg) {
+    transform: rotate(180deg);
+  }
+
+  /* Product name (crossfades) */
+  .hero__pname {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--brown);
+    margin: var(--sp-4) 0 var(--sp-2);
+    min-height: 1.3em;
+    transition: opacity 0.18s ease;
+  }
+
+  /* Dots */
+  .hero__dots {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    margin-bottom: var(--sp-4);
+  }
+  .hero__dot {
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    display: inline-grid;
+    place-items: center;
+    padding: 0;
+  }
+  .hero__dot::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .hero__dot:hover::after {
+    background: var(--ink-soft);
+  }
+  .hero__dot.is-active::after {
+    background: var(--brown);
+    transform: scale(1.2);
+  }
+
+  /* Controls appear only once JS is ready (no-JS shows just the first product) */
+  .hero__arrow,
+  .hero__dots {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .hero.is-ready .hero__arrow,
+  .hero.is-ready .hero__dots {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hero__caption {
+    font-family: var(--font-head);
+    font-style: italic;
+    font-size: clamp(17px, 3.4vw, 22px);
+    color: var(--ink-soft);
+    max-width: 40ch;
+    margin: 0 0 var(--sp-5);
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    justify-content: center;
+  }
+  .hero__cta {
+    font-size: 17px;
+    padding-inline: 26px;
+  }
+
+  @media (max-width: 640px) {
+    .hero__arrow {
+      display: none;
+    }
+  }
+
+  /* Reduced motion: crossfade only, no sliding/rotation */
+  @media (prefers-reduced-motion: reduce) {
+    .hero__slide {
+      transition: opacity 0.15s ease;
+    }
+    .hero__slide.pos-left,
+    .hero__slide.pos-right {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>('.hero')
+  const carousel = section?.querySelector<HTMLElement>('[data-carousel]')
+  const stage = carousel?.querySelector<HTMLElement>('.hero__stage')
+  if (section && carousel && stage) {
+    const slides = Array.from(carousel.querySelectorAll<HTMLElement>('.hero__slide'))
+    const dots = Array.from(section.querySelectorAll<HTMLButtonElement>('.hero__dot'))
+    const names = slides.map((s) => s.getAttribute('data-name') || '')
+    const pname = section.querySelector<HTMLElement>('[data-pname]')
+    const live = section.querySelector<HTMLElement>('[data-live]')
+    const prevBtn = carousel.querySelector<HTMLButtonElement>('[data-prev]')
+    const nextBtn = carousel.querySelector<HTMLButtonElement>('[data-next]')
+    const count = slides.length
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
+    let current = 0
+
+    section.classList.add('is-ready')
+
+    const setInert = (el: HTMLElement, on: boolean) => {
+      if (on) {
+        el.setAttribute('aria-hidden', 'true')
+        el.setAttribute('inert', '')
+      } else {
+        el.removeAttribute('aria-hidden')
+        el.removeAttribute('inert')
+      }
+    }
+    slides.forEach((s, i) => setInert(s, i !== 0))
+
+    const updateMeta = (i: number) => {
+      dots.forEach((d, di) => {
+        d.classList.toggle('is-active', di === i)
+        if (di === i) d.setAttribute('aria-current', 'true')
+        else d.removeAttribute('aria-current')
+      })
+      if (pname) {
+        pname.style.opacity = '0'
+        window.setTimeout(() => {
+          pname.textContent = names[i]
+          pname.style.opacity = '1'
+        }, 120)
+      }
+      if (live) live.textContent = names[i]
+    }
+
+    // Deterministic: render every slide from `current` each time. Rapid input
+    // can't desync state because each call re-resolves all slides.
+    const render = (prev: number, dir: number) => {
+      const instant = reduce.matches
+      slides.forEach((s, i) => {
+        if (i === current) {
+          setInert(s, false)
+          if (instant) {
+            s.classList.remove('pos-left', 'pos-right', 'is-hidden')
+            s.classList.add('pos-center')
+          } else {
+            // Commit the incoming side with no transition, then switch to centre
+            // synchronously so the move animates — no deferred callback to go stale.
+            const enter = dir === 1 ? 'pos-right' : 'pos-left'
+            s.classList.remove('is-hidden', 'pos-left', 'pos-right', 'pos-center')
+            s.style.transition = 'none'
+            s.classList.add(enter)
+            void s.offsetWidth // commit enter position
+            s.style.transition = ''
+            s.classList.remove(enter)
+            s.classList.add('pos-center')
+          }
+        } else if (i === prev && !instant) {
+          // exit to the opposite side, then hide once settled
+          setInert(s, true)
+          s.classList.remove('pos-center', 'pos-left', 'pos-right')
+          s.classList.add(dir === 1 ? 'pos-left' : 'pos-right')
+          const hide = () => {
+            s.removeEventListener('transitionend', hide)
+            if (current !== i) {
+              s.classList.remove('pos-left', 'pos-right')
+              s.classList.add('is-hidden')
+            }
+          }
+          s.addEventListener('transitionend', hide)
+          window.setTimeout(hide, 700)
+        } else {
+          setInert(s, true)
+          s.classList.remove('pos-center', 'pos-left', 'pos-right')
+          s.classList.add('is-hidden')
+        }
+      })
+    }
+
+    const goTo = (target: number, dir: number) => {
+      const n = (target + count) % count
+      if (n === current) return
+      const prev = current
+      current = n
+      updateMeta(n)
+      render(prev, dir)
+    }
+
+    nextBtn?.addEventListener('click', () => goTo(current + 1, 1))
+    prevBtn?.addEventListener('click', () => goTo(current - 1, -1))
+    dots.forEach((d, i) =>
+      d.addEventListener('click', () => goTo(i, i > current ? 1 : -1))
+    )
+
+    // Keyboard: only when focus is inside the carousel or the dots.
+    section.addEventListener('keydown', (e) => {
+      const el = e.target as HTMLElement
+      if (!el.closest('[data-carousel], [data-dots]')) return
+      if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        goTo(current + 1, 1)
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        goTo(current - 1, -1)
+      }
+    })
+
+    // Swipe (Pointer Events). Horizontal only; vertical scroll stays free.
+    let sx = 0,
+      sy = 0,
+      tracking = false,
+      decided = false,
+      horiz = false
+    stage.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      tracking = true
+      decided = false
+      horiz = false
+      sx = e.clientX
+      sy = e.clientY
+    })
+    stage.addEventListener('pointermove', (e) => {
+      if (!tracking || decided) return
+      const dx = e.clientX - sx
+      const dy = e.clientY - sy
+      if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+        decided = true
+        horiz = Math.abs(dx) > Math.abs(dy)
+      }
+    })
+    const endSwipe = (e: PointerEvent) => {
+      if (!tracking) return
+      tracking = false
+      if (!decided || !horiz) return
+      const dx = e.clientX - sx
+      if (Math.abs(dx) >= 50) {
+        if (dx < 0) goTo(current + 1, 1)
+        else goTo(current - 1, -1)
+      }
+    }
+    stage.addEventListener('pointerup', endSwipe)
+    stage.addEventListener('pointercancel', () => {
+      tracking = false
+      decided = false
+      horiz = false
+    })
+
+    // Preload the next product once idle.
+    const idle =
+      (window as any).requestIdleCallback || ((cb: Function) => setTimeout(cb, 600))
+    idle(() => {
+      const img = slides[1]?.querySelector('img')
+      if (img) {
+        const pre = new Image()
+        if (img.srcset) pre.srcset = img.srcset
+        pre.src = img.currentSrc || img.src
+      }
+    })
+  }
+</script>

@@ -1,0 +1,133 @@
+---
+import Icon from './Icon.astro'
+import { SITE, langHome, type Lang } from '../lib/site'
+import { useDict } from '../i18n/ui'
+import { business, hasSocial } from '../data/business'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const t = useDict(lang)
+const year = new Date().getFullYear()
+
+const nav = [
+  { href: '#menuja', label: t.navMenu },
+  { href: '#rreth-nesh', label: t.navAbout },
+  { href: '#kontakt', label: t.navContact }
+]
+
+// Only render social links we actually have.
+const socials = business.socialUrls
+  .map((url) => {
+    const u = url.toLowerCase()
+    const name = u.includes('facebook')
+      ? 'facebook'
+      : u.includes('instagram')
+        ? 'instagram'
+        : null
+    return name ? { url, name: name as 'facebook' | 'instagram' } : null
+  })
+  .filter(Boolean) as { url: string; name: 'facebook' | 'instagram' }[]
+---
+
+<footer class="ft">
+  <div class="container ft__inner">
+    <a class="ft__brand" href={langHome(lang)} aria-label={SITE.brand}>
+      <img src={SITE.logo} width="40" height="39" alt={SITE.brand} loading="lazy" />
+      <span>{SITE.brand}</span>
+    </a>
+
+    <nav class="ft__nav" aria-label={t.navMenu}>
+      {nav.map((n) => <a href={n.href}>{n.label}</a>)}
+    </nav>
+
+    {hasSocial && (
+      <div class="ft__social">
+        {socials.map((s) => (
+          <a href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.name}>
+            <Icon name={s.name} size={22} />
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <div class="ft__bottom container">
+    <p class="ft__tag">{t.heroH1}</p>
+    <p class="ft__copy">© {year} {SITE.brand}. {t.rights}</p>
+  </div>
+</footer>
+
+<style>
+  .ft {
+    border-top: 1px solid var(--border);
+    background: var(--cream);
+    padding-block: var(--sp-6);
+  }
+  .ft__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sp-5);
+    flex-wrap: wrap;
+  }
+  .ft__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-3);
+    text-decoration: none;
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 17px;
+  }
+  .ft__brand img {
+    width: 40px;
+    height: auto;
+  }
+  .ft__nav {
+    display: flex;
+    gap: var(--sp-5);
+    flex-wrap: wrap;
+  }
+  .ft__nav a {
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+  .ft__nav a:hover {
+    color: var(--brown);
+  }
+  .ft__social {
+    display: flex;
+    gap: var(--sp-3);
+    color: var(--brown);
+  }
+  .ft__social a:hover {
+    opacity: 0.75;
+  }
+  .ft__bottom {
+    margin-top: var(--sp-5);
+    padding-top: var(--sp-5);
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .ft__tag {
+    font-family: var(--font-head);
+    font-style: italic;
+    color: var(--ink);
+    margin: 0 0 4px;
+  }
+  .ft__copy {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 13.5px;
+  }
+
+  @media (max-width: 680px) {
+    .ft__inner {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>

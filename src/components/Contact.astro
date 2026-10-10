@@ -1,0 +1,141 @@
+---
+import Icon from './Icon.astro'
+import { useDict } from '../i18n/ui'
+import type { Lang } from '../lib/site'
+import { business, hasPhone, hasHours, hasMap } from '../data/business'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const t = useDict(lang)
+const isDev = import.meta.env.DEV
+
+// Address: city is confirmed (Tiranë), street is not — show the known part.
+const addressValue = business.streetAddress
+  ? `${business.streetAddress}, ${business.city ?? 'Tiranë'}`
+  : business.city
+    ? `${business.city}, ${lang === 'en' ? 'Albania' : 'Shqipëri'}`
+    : null
+
+type Row = { icon: 'pin' | 'clock' | 'phone'; label: string; value: string | null; href?: string }
+const rows: Row[] = [
+  {
+    icon: 'pin',
+    label: t.address,
+    value: addressValue,
+    href: hasMap ? business.googleMapsUrl! : undefined
+  },
+  { icon: 'clock', label: t.hours, value: hasHours ? business.openingHours : null },
+  {
+    icon: 'phone',
+    label: t.phone,
+    value: hasPhone ? business.telephone : null,
+    href: hasPhone ? `tel:${business.telephone}` : undefined
+  }
+]
+
+// In production, hide rows with no real value. In dev, show a placeholder.
+const visibleRows = rows.filter((r) => r.value || isDev)
+const allEmpty = rows.every((r) => !r.value)
+---
+
+<section id="kontakt" class="section contact" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2 id="contact-title" class="section-head__title">{t.contactTitle}</h2>
+    </div>
+
+    {allEmpty && !isDev && (
+      <p class="contact__fallback reveal">{t.contactFallback}</p>
+    )}
+
+    <ul class="contact__grid reveal">
+      {
+        visibleRows.map((r) => (
+          <li class="contact__item">
+            <span class="contact__icon">
+              <Icon name={r.icon} size={20} />
+            </span>
+            <span class="contact__label">{r.label}</span>
+            {r.value ? (
+              r.href ? (
+                <a class="contact__value contact__value--link" href={r.href} {...(r.icon === 'pin' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                  {r.value}
+                </a>
+              ) : (
+                <span class="contact__value">{r.value}</span>
+              )
+            ) : (
+              <span class="contact__value contact__value--todo">{t.toBeAdded}</span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contact__grid {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    max-width: 920px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-5);
+    text-align: center;
+  }
+  .contact__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: var(--sp-4);
+  }
+  .contact__icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--brown);
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .contact__label {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .contact__value {
+    color: var(--ink-soft);
+    font-size: 16px;
+  }
+  .contact__value--link {
+    color: var(--brown);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .contact__value--link:hover {
+    text-decoration: underline;
+  }
+  .contact__value--todo {
+    font-style: italic;
+    opacity: 0.8;
+  }
+  .contact__fallback {
+    text-align: center;
+    color: var(--ink-soft);
+    margin-top: 0;
+  }
+
+  @media (max-width: 680px) {
+    .contact__grid {
+      grid-template-columns: 1fr;
+      gap: var(--sp-3);
+    }
+  }
+</style>

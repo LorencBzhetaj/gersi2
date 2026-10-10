@@ -1,0 +1,42 @@
+/* ===== Brand design tokens (targets from docs/IMPLEMENTATION.md) ===== */
+:root {
+  /* Color */
+  --cream: #fcf8f1;
+  --cream-2: #f6eee0;
+  --surface: #ffffff;
+  --ink: #351b0e;
+  --ink-soft: #6c5647;
+  --brown: #513421;
+  --brown-700: #3f2819;
+  --border: #e5ddd2;
+  --badge-soft: #f1e7d8;
+
+  /* Typography */
+  --font-head: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Helvetica, Arial, sans-serif;
+
+  /* Spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 72px;
+  --sp-9: 96px;
+
+  /* Radius & shadow */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(53, 27, 14, 0.04),
+    0 10px 30px rgba(53, 27, 14, 0.06);
+  --shadow-hero: 0 30px 60px -20px rgba(53, 27, 14, 0.25);
+
+  /* Layout */
+  --maxw: 1120px;
+  --header-h: 72px;
+}

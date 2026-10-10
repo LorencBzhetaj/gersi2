@@ -1,0 +1,80 @@
+---
+import { useDict } from '../i18n/ui'
+import type { Lang } from '../lib/site'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const t = useDict(lang)
+---
+
+<section id="rreth-nesh" class="section about" aria-labelledby="about-title">
+  <div class="container about__inner">
+    <div class="about__text reveal">
+      <h2 id="about-title" class="about__title">{t.aboutTitle}</h2>
+      <p class="about__lead">{t.aboutLead}</p>
+      <p class="about__body">{t.aboutBody}</p>
+    </div>
+    <div class="about__media reveal">
+      <img
+        src="/assets/editorial/preparation-concept.webp"
+        width="459"
+        height="283"
+        loading="lazy"
+        decoding="async"
+        alt={
+          lang === 'en'
+            ? 'Skewers of meat grilling over the flame'
+            : 'Hell me mish duke u pjekur në grill'
+        }
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    background: var(--cream-2);
+    border-block: 1px solid var(--border);
+  }
+  .about__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-7);
+    align-items: center;
+  }
+  .about__title {
+    font-size: clamp(26px, 5vw, 38px);
+    margin-bottom: var(--sp-3);
+  }
+  .about__lead {
+    font-family: var(--font-head);
+    font-size: 20px;
+    color: var(--brown);
+    margin: 0 0 var(--sp-4);
+  }
+  .about__body {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 16.5px;
+    max-width: 52ch;
+  }
+  .about__media img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--r-md);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-card);
+  }
+
+  @media (max-width: 820px) {
+    .about__inner {
+      grid-template-columns: 1fr;
+      gap: var(--sp-5);
+    }
+    .about__media {
+      order: -1;
+    }
+  }
+</style>

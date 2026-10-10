@@ -1,0 +1,143 @@
+{
+  "foods": [
+    {
+      "id": "sufllaqe-pule",
+      "name": "Sufllaqe Pule",
+      "price": 250,
+      "currency": "ALL",
+      "description": "Mish pule i marinuar në hell, me patate, sallatë të freskët dhe salcat tona.",
+      "popular": true,
+      "image": "/assets/food/sufllaqe-pule.webp"
+    },
+    {
+      "id": "sufllaqe-derri",
+      "name": "Sufllaqe Derri",
+      "price": 250,
+      "currency": "ALL",
+      "description": "Mish derri i shijshëm në hell, me patate, sallatë dhe salcë.",
+      "popular": true,
+      "image": "/assets/food/sufllaqe-derri.webp"
+    },
+    {
+      "id": "sufllaqe-e-hapur",
+      "name": "Sufllaqe e Hapur",
+      "price": 350,
+      "currency": "ALL",
+      "description": "Pjatë e hapur me mish në hell, patate, sallatë dhe pite të ngrohtë.",
+      "popular": false,
+      "image": "/assets/food/sufllaqe-e-hapur.webp"
+    },
+    {
+      "id": "doner-derri",
+      "name": "Doner Derri",
+      "price": 250,
+      "currency": "ALL",
+      "description": "Mish derri i prerë hollë nga doneri, në pite me sallatë dhe salcë.",
+      "popular": false,
+      "image": "/assets/food/doner-derri.webp"
+    },
+    {
+      "id": "doner-pule",
+      "name": "Doner Pule",
+      "price": 250,
+      "currency": "ALL",
+      "description": "Mish pule nga doneri, në pite me sallatë të freskët dhe salcë.",
+      "popular": false,
+      "image": "/assets/food/doner-pule.webp"
+    },
+    {
+      "id": "hotdog",
+      "name": "Hotdog",
+      "price": 250,
+      "currency": "ALL",
+      "description": "Salçiçe në bukë të butë me salcat klasike.",
+      "popular": false,
+      "image": "/assets/food/hotdog.webp"
+    },
+    {
+      "id": "sandwich",
+      "name": "Sandwich",
+      "price": 180,
+      "currency": "ALL",
+      "description": "Sandwich i mbushur me mish, djathë dhe perime.",
+      "popular": false,
+      "image": "/assets/food/sandwich.webp"
+    },
+    {
+      "id": "tost",
+      "name": "Tost",
+      "price": 150,
+      "currency": "ALL",
+      "description": "Tost i thekur me proshutë dhe djathë.",
+      "popular": false,
+      "image": "/assets/food/tost.webp"
+    },
+    {
+      "id": "patate",
+      "name": "Patate",
+      "price": 200,
+      "currency": "ALL",
+      "description": "Patate të skuqura krokante me kripë.",
+      "popular": false,
+      "image": "/assets/food/patate.webp"
+    }
+  ],
+  "drinks": [
+    {
+      "name": "Coca-Cola",
+      "price": 120,
+      "currency": "ALL",
+      "alcohol18Plus": false
+    },
+    {
+      "name": "Sprite",
+      "price": 120,
+      "currency": "ALL",
+      "alcohol18Plus": false
+    },
+    {
+      "name": "Fanta",
+      "price": 120,
+      "currency": "ALL",
+      "alcohol18Plus": false
+    },
+    {
+      "name": "Ujë me Vitamina",
+      "price": 100,
+      "currency": "ALL",
+      "alcohol18Plus": false
+    },
+    {
+      "name": "Ujë Natyral",
+      "price": 60,
+      "currency": "ALL",
+      "alcohol18Plus": false
+    },
+    {
+      "name": "B52",
+      "price": 150,
+      "currency": "ALL",
+      "alcohol18Plus": false
+    },
+    {
+      "name": "Peroni",
+      "price": 150,
+      "currency": "ALL",
+      "alcohol18Plus": true
+    },
+    {
+      "name": "Korça",
+      "price": 150,
+      "currency": "ALL",
+      "alcohol18Plus": true
+    },
+    {
+      "name": "Peja",
+      "price": 150,
+      "currency": "ALL",
+      "alcohol18Plus": true
+    }
+  ],
+  "alcoholNotice": "Birrat vetëm 18+",
+  "b52Classification": "Confirm whether B52 is alcoholic before labelling."
+}
