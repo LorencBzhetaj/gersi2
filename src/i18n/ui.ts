@@ -33,10 +33,18 @@ export interface Dict {
   aboutBody: string
   // contact
   contactTitle: string
+  findHeading: string
+  findSub: string
   address: string
   hours: string
   phone: string
   toBeAdded: string
+  toBeAddedLater: string
+  openInMaps: string
+  mapTitle: string
+  contactCtaTitle: string
+  contactCtaSub: string
+  phoneCall: string
   contactFallback: string
   directions: string
   // footer
@@ -75,10 +83,18 @@ const sq: Dict = {
   aboutBody:
     'Sufllaqe Gersi është një fast food familjar në Tiranë. Në menunë tonë gjeni sufllaqe pule dhe derri, sufllaqe të hapur, doner, hotdog, sandwich, tost dhe patate. Shikoni menunë dhe çmimet, ose na kontaktoni për më shumë informacion.',
   contactTitle: 'Kontakt',
+  findHeading: 'Na gjeni këtu.',
+  findSub: 'Ju mirëpresim të na vizitoni ose të na kontaktoni për çdo pyetje.',
   address: 'Adresa',
   hours: 'Orari',
   phone: 'Telefoni',
   toBeAdded: 'Për t’u plotësuar',
+  toBeAddedLater: 'Për t’u plotësuar më vonë.',
+  openInMaps: 'Hap në Google Maps',
+  mapTitle: 'Harta e vendndodhjes — Sufllaqe Gersi',
+  contactCtaTitle: 'Na kontaktoni.',
+  contactCtaSub: 'Për çdo pyetje ose porosi, na telefononi drejtpërdrejt.',
+  phoneCall: 'Telefono',
   contactFallback: 'Na kontaktoni së shpejti për adresën, orarin dhe telefonin.',
   directions: 'Hap në hartë',
   rights: 'Të gjitha të drejtat e rezervuara.',
@@ -116,10 +132,18 @@ const en: Dict = {
   aboutBody:
     'Sufllaqe Gersi is a family fast food in Tirana. Our menu features chicken and pork souvlaki, open souvlaki, doner, hotdog, sandwich, toast and fries. Browse the menu and prices, or contact us for more information.',
   contactTitle: 'Contact',
+  findHeading: 'Find us here.',
+  findSub: 'We’d love to welcome you, or reach out with any question.',
   address: 'Address',
   hours: 'Hours',
   phone: 'Phone',
   toBeAdded: 'To be added',
+  toBeAddedLater: 'To be added soon.',
+  openInMaps: 'Open in Google Maps',
+  mapTitle: 'Location map — Sufllaqe Gersi',
+  contactCtaTitle: 'Contact us.',
+  contactCtaSub: 'For any question or order, call us directly.',
+  phoneCall: 'Call',
   contactFallback: 'Contact us soon for the address, hours and phone.',
   directions: 'Open in Maps',
   rights: 'All rights reserved.',

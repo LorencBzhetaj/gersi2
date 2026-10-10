@@ -35,6 +35,7 @@ const n = heroProducts.length
                 class={`hero__slide${i === 0 ? ' pos-center' : ' is-hidden'}`}
                 data-slide={i}
                 data-name={p.name[lang]}
+                data-desc={p.desc[lang]}
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${p.name[lang]} (${i + 1}/${n})`}
@@ -67,7 +68,10 @@ const n = heroProducts.length
       </button>
     </div>
 
-    <p class="hero__pname" data-pname>{heroProducts[0].name[lang]}</p>
+    <div class="hero__textblock">
+      <p class="hero__pname" data-pname>{heroProducts[0].name[lang]}</p>
+      <p class="hero__pdesc" data-pdesc>{heroProducts[0].desc[lang]}</p>
+    </div>
 
     <div class="hero__dots" data-dots role="group" aria-label={t.chooseProduct}>
       {
@@ -82,8 +86,6 @@ const n = heroProducts.length
         ))
       }
     </div>
-
-    <p class="hero__caption">{t.heroCaption}</p>
 
     <div class="hero__actions">
       <a class="btn btn--primary hero__cta" href="#menuja">
@@ -206,15 +208,31 @@ const n = heroProducts.length
     transform: rotate(180deg);
   }
 
-  /* Product name (crossfades) */
+  /* Product name + description (crossfade together, space reserved) */
+  .hero__textblock {
+    margin: var(--sp-4) 0;
+    min-height: 132px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
   .hero__pname {
     font-family: var(--font-head);
-    font-weight: 600;
-    font-size: 18px;
-    color: var(--brown);
-    margin: var(--sp-4) 0 var(--sp-2);
-    min-height: 1.3em;
-    transition: opacity 0.18s ease;
+    font-weight: 700;
+    font-size: clamp(20px, 4.6vw, 24px);
+    color: var(--ink);
+    margin: 0;
+    transition: opacity 0.2s ease;
+  }
+  .hero__pdesc {
+    font-size: clamp(15px, 3.4vw, 17px);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 42ch;
+    margin: 0;
+    transition: opacity 0.2s ease;
   }
 
   /* Dots */
@@ -262,14 +280,6 @@ const n = heroProducts.length
     pointer-events: auto;
   }
 
-  .hero__caption {
-    font-family: var(--font-head);
-    font-style: italic;
-    font-size: clamp(17px, 3.4vw, 22px);
-    color: var(--ink-soft);
-    max-width: 40ch;
-    margin: 0 0 var(--sp-5);
-  }
   .hero__actions {
     display: flex;
     flex-wrap: wrap;
@@ -307,7 +317,9 @@ const n = heroProducts.length
     const slides = Array.from(carousel.querySelectorAll<HTMLElement>('.hero__slide'))
     const dots = Array.from(section.querySelectorAll<HTMLButtonElement>('.hero__dot'))
     const names = slides.map((s) => s.getAttribute('data-name') || '')
+    const descs = slides.map((s) => s.getAttribute('data-desc') || '')
     const pname = section.querySelector<HTMLElement>('[data-pname]')
+    const pdesc = section.querySelector<HTMLElement>('[data-pdesc]')
     const live = section.querySelector<HTMLElement>('[data-live]')
     const prevBtn = carousel.querySelector<HTMLButtonElement>('[data-prev]')
     const nextBtn = carousel.querySelector<HTMLButtonElement>('[data-next]')
@@ -334,14 +346,23 @@ const n = heroProducts.length
         if (di === i) d.setAttribute('aria-current', 'true')
         else d.removeAttribute('aria-current')
       })
-      if (pname) {
-        pname.style.opacity = '0'
-        window.setTimeout(() => {
-          pname.textContent = names[i]
-          pname.style.opacity = '1'
-        }, 120)
-      }
-      if (live) live.textContent = names[i]
+      // Crossfade name + description together (same active index).
+      const fades: [HTMLElement | null, string][] = [
+        [pname, names[i]],
+        [pdesc, descs[i]]
+      ]
+      fades.forEach(([el]) => {
+        if (el) el.style.opacity = '0'
+      })
+      window.setTimeout(() => {
+        fades.forEach(([el, text]) => {
+          if (el) {
+            el.textContent = text
+            el.style.opacity = '1'
+          }
+        })
+      }, 120)
+      if (live) live.textContent = `${names[i]}. ${descs[i]}`
     }
 
     // Deterministic: render every slide from `current` each time. Rapid input
