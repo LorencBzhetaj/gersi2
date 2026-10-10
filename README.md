@@ -19,7 +19,15 @@ npm run build      # -> dist/
 npm run preview    # provë e build-it
 npm run check      # typecheck (astro check)
 npm run og         # rigjeneron favicon + og-image nga logoja/hero
+npm run hero       # rigjeneron WebP-të e carousel-it nga assets-src/hero/*.png
 ```
+
+## Hero carousel
+Hero-ja është një carousel me 4 produkte (sufllaqe, doner, hotdog, sufllaqe e hapur) ku
+lëviz **vetëm produkti** mbi sfondin krem. Swipe majtas/djathtas në telefon, shigjeta + pika
+në desktop, pa autoplay, respekton `prefers-reduced-motion`. Pa JS shfaqet sufllaqja + CTA.
+PNG-të origjinale (transparente, 1536×1024) ruhen te `assets-src/hero/`; `npm run hero`
+i prodhon WebP-të me alpha te `public/assets/hero/`.
 
 ## Ku ndryshoj gjërat
 | Çfarë | Skedari |
@@ -50,16 +58,16 @@ përshkrimet dhe UI përkthehen.
 ⚠️ **Rich Results Test / Lighthouse NUK janë ekzekutuar** (kërkojnë URL publike). JSON-LD
 parse-ohet lokalisht dhe ndjek rregullat e schema-s; validimi zyrtar bëhet pas publikimit.
 
-## Të dhëna që duhen plotësuar (`src/data/business.json`)
-Sapo të konfirmohen, shtohen në UI (seksioni Kontakt) dhe në JSON-LD automatikisht:
-- `streetAddress` + `postalCode` → shpejton **PostalAddress e plotë** (kërkohet për
-  eligibility të LocalBusiness rich results). Tani shfaqet vetëm “Tiranë, Shqipëri”.
-- `telephone` (format E.164, p.sh. `+355…`) → rreshti Telefoni + `tel:`
-- `openingHours` → rreshti Orari (+ `openingHoursSpecification` në schema)
-- `latitude` / `longitude` → `GeoCoordinates`
-- `googleMapsUrl` → butoni “Hap në hartë” + `hasMap`
-- `socialUrls` (Facebook/Instagram) → ikonat në footer + `sameAs`
-- `orderUrl` → destinacioni real i butonit “Porosit tani” (tani çon te #kontakt)
+## Të dhëna (`src/data/business.json`)
+✅ Të plotësuara: `telephone` (+355683701800 → `tel:` + schema), `googleMapsUrl`
+(butoni “Hap në hartë” + `hasMap`), `latitude`/`longitude` (`GeoCoordinates`),
+`socialUrls` (Facebook → ikona në footer + `sameAs`).
+
+Mbeten për t’u plotësuar:
+- `streetAddress` + `postalCode` → **PostalAddress e plotë** (kërkohet për eligibility të
+  LocalBusiness rich results). Tani shfaqet vetëm “Tiranë, Shqipëri”.
+- `openingHours` → rreshti Orari (+ `openingHoursSpecification` në schema).
+- `orderUrl` (porosi online), nëse dëshironi destinacion tjetër nga telefonata.
 - Konfirmo klasifikimin e **B52** (alkool apo jo) para ndonjë etikete 18+.
 
 Në zhvillim fushat bosh shfaqen si “Për t’u plotësuar”; në prodhim fshihen automatikisht.
