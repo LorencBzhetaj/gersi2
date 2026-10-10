@@ -4,12 +4,24 @@
   "familyOwned": true,
   "city": "Tiranë",
   "country": "AL",
-  "streetAddress": null,
+  "streetAddress": "Rruga Arkitekt Kasemi",
   "postalCode": null,
   "latitude": 41.3333551,
   "longitude": 19.8338871,
   "telephone": "+355683701800",
-  "openingHours": null,
+  "openingHours": {
+    "display": {
+      "sq": "Çdo ditë 09:00–23:00, E diel pushim",
+      "en": "Daily 09:00–23:00, Sunday closed"
+    },
+    "spec": [
+      {
+        "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "opens": "09:00",
+        "closes": "23:00"
+      }
+    ]
+  },
   "googleMapsUrl": "https://www.google.com/maps/place/sufllaqe+gersi/data=!4m2!3m1!1s0x13503100705ac7b1:0x565b11152cfdf54b",
   "orderUrl": null,
   "socialUrls": ["https://www.facebook.com/sufllaqegersi/"],

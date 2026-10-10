@@ -42,7 +42,11 @@ const cards: Card[] = [
     href: hasMap ? business.googleMapsUrl! : undefined,
     external: true
   },
-  { icon: 'clock', label: t.hours, value: business.openingHours },
+  {
+    icon: 'clock',
+    label: t.hours,
+    value: business.openingHours ? business.openingHours.display[lang] : null
+  },
   {
     icon: 'phone',
     label: t.phone,

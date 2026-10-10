@@ -73,20 +73,6 @@ const n = heroProducts.length
       <p class="hero__pdesc" data-pdesc>{heroProducts[0].desc[lang]}</p>
     </div>
 
-    <div class="hero__dots" data-dots role="group" aria-label={t.chooseProduct}>
-      {
-        heroProducts.map((p, i) => (
-          <button
-            class={`hero__dot${i === 0 ? ' is-active' : ''}`}
-            type="button"
-            data-dot={i}
-            aria-label={`${t.viewProduct} ${p.name[lang]}`}
-            aria-current={i === 0 ? 'true' : undefined}
-          />
-        ))
-      }
-    </div>
-
     <div class="hero__actions">
       <a class="btn btn--primary hero__cta" href="#menuja">
         {t.viewMenu}
@@ -96,7 +82,7 @@ const n = heroProducts.length
         business.telephone && (
           <a class="btn btn--outline hero__cta" href={`tel:${business.telephone}`}>
             <Icon name="phone" size={18} />
-            {t.callToOrder}
+            {t.order}
           </a>
         )
       }
@@ -235,60 +221,31 @@ const n = heroProducts.length
     transition: opacity 0.2s ease;
   }
 
-  /* Dots */
-  .hero__dots {
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-    margin-bottom: var(--sp-4);
-  }
-  .hero__dot {
-    width: 44px;
-    height: 44px;
-    border: 0;
-    background: transparent;
-    cursor: pointer;
-    display: inline-grid;
-    place-items: center;
-    padding: 0;
-  }
-  .hero__dot::after {
-    content: '';
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--border);
-    transition: background 0.15s ease, transform 0.15s ease;
-  }
-  .hero__dot:hover::after {
-    background: var(--ink-soft);
-  }
-  .hero__dot.is-active::after {
-    background: var(--brown);
-    transform: scale(1.2);
-  }
-
-  /* Controls appear only once JS is ready (no-JS shows just the first product) */
-  .hero__arrow,
-  .hero__dots {
+  /* Arrows appear only once JS is ready (no-JS shows just the first product) */
+  .hero__arrow {
     opacity: 0;
     pointer-events: none;
   }
-  .hero.is-ready .hero__arrow,
-  .hero.is-ready .hero__dots {
+  .hero.is-ready .hero__arrow {
     opacity: 1;
     pointer-events: auto;
   }
 
   .hero__actions {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: var(--sp-3);
     justify-content: center;
+    width: 100%;
+    max-width: 440px;
+    margin-inline: auto;
   }
   .hero__cta {
-    font-size: 17px;
-    padding-inline: 26px;
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: 16px;
+    padding-inline: 14px;
+    white-space: nowrap;
   }
 
   @media (max-width: 640px) {
@@ -315,7 +272,6 @@ const n = heroProducts.length
   const stage = carousel?.querySelector<HTMLElement>('.hero__stage')
   if (section && carousel && stage) {
     const slides = Array.from(carousel.querySelectorAll<HTMLElement>('.hero__slide'))
-    const dots = Array.from(section.querySelectorAll<HTMLButtonElement>('.hero__dot'))
     const names = slides.map((s) => s.getAttribute('data-name') || '')
     const descs = slides.map((s) => s.getAttribute('data-desc') || '')
     const pname = section.querySelector<HTMLElement>('[data-pname]')
@@ -341,11 +297,6 @@ const n = heroProducts.length
     slides.forEach((s, i) => setInert(s, i !== 0))
 
     const updateMeta = (i: number) => {
-      dots.forEach((d, di) => {
-        d.classList.toggle('is-active', di === i)
-        if (di === i) d.setAttribute('aria-current', 'true')
-        else d.removeAttribute('aria-current')
-      })
       // Crossfade name + description together (same active index).
       const fades: [HTMLElement | null, string][] = [
         [pname, names[i]],
@@ -420,14 +371,11 @@ const n = heroProducts.length
 
     nextBtn?.addEventListener('click', () => goTo(current + 1, 1))
     prevBtn?.addEventListener('click', () => goTo(current - 1, -1))
-    dots.forEach((d, i) =>
-      d.addEventListener('click', () => goTo(i, i > current ? 1 : -1))
-    )
 
-    // Keyboard: only when focus is inside the carousel or the dots.
+    // Keyboard: only when focus is inside the carousel (the arrow buttons).
     section.addEventListener('keydown', (e) => {
       const el = e.target as HTMLElement
-      if (!el.closest('[data-carousel], [data-dots]')) return
+      if (!el.closest('[data-carousel]')) return
       if (e.key === 'ArrowRight') {
         e.preventDefault()
         goTo(current + 1, 1)

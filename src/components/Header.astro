@@ -2,6 +2,10 @@
 import Icon from './Icon.astro'
 import { SITE, langHome, type Lang } from '../lib/site'
 import { useDict } from '../i18n/ui'
+import { business } from '../data/business'
+
+// "Porosit tani" calls the restaurant (same action as the hero button).
+const orderHref = business.telephone ? `tel:${business.telephone}` : '#kontakt'
 
 interface Props {
   lang: Lang
@@ -39,7 +43,7 @@ const nav = [
       <a class="hd__lang" href={otherHome} data-lang-switch aria-label={t.langSwitchAria}>
         {t.langButton}
       </a>
-      <a class="btn btn--primary hd__order" href="#kontakt">{t.order}</a>
+      <a class="btn btn--primary hd__order" href={orderHref}>{t.order}</a>
       <button
         type="button"
         class="hd__burger"
@@ -58,7 +62,7 @@ const nav = [
     <nav class="hd__mobile-nav" aria-label={t.navMenu}>
       {nav.map((n) => <a href={n.href} data-close>{n.label}</a>)}
       <a class="hd__mobile-lang" href={otherHome} data-lang-switch>{t.langButton === 'EN' ? 'English' : 'Shqip'}</a>
-      <a class="btn btn--primary" href="#kontakt" data-close>{t.order}</a>
+      <a class="btn btn--primary" href={orderHref} data-close>{t.order}</a>
     </nav>
   </div>
 </header>

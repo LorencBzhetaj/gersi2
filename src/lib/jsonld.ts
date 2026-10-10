@@ -55,6 +55,14 @@ export function buildJsonLd(lang: Lang) {
   }
   if (business.googleMapsUrl) restaurant.hasMap = business.googleMapsUrl
   if (business.socialUrls.length) restaurant.sameAs = business.socialUrls
+  if (business.openingHours) {
+    restaurant.openingHoursSpecification = business.openingHours.spec.map((s) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: s.days.map((d) => `https://schema.org/${d}`),
+      opens: s.opens,
+      closes: s.closes
+    }))
+  }
 
   // --- WebSite ---
   const website = {
